@@ -63,24 +63,9 @@ end
 function GetModelXML(name)
 return [[
 <Item class="Model">
-		<Properties>
-			<CoordinateFrame name="ModelInPrimary">
-				<X>0</X>
-				<Y>0</Y>
-				<Z>0</Z>
-				<R00>1</R00>
-				<R01>0</R01>
-				<R02>0</R02>
-				<R10>0</R10>
-				<R11>1</R11>
-				<R12>0</R12>
-				<R20>0</R20>
-				<R21>0</R21>
-				<R22>1</R22>
-			</CoordinateFrame>]] .. "\n<string name=\"Name\">"..name .. "</string>\n"..[[
-			<Ref name="PrimaryPart">null</Ref>
+		<Properties>]] .. "\n<string name=\"Name\">"..name .. "</string>\n"..[[
 		</Properties>
-		]]
+]]
 end
 
 function GetScriptXML(name, source)
@@ -89,9 +74,7 @@ for i,v in pairs(xml_sub) do -- sub i with v
 source = source:gsub(v[1],v[2])
 end
 return [[<Item class="]]..classname..[[">
-			<Properties>
-				<bool name="Disabled">false</bool>
-				<Content name="LinkedSource"><null></null></Content>]].."\n<string name=\"Name\">"..name.."</string>\n"..[[<ProtectedString name="Source">]] ..source..[[
+			<Properties>]].."\n<string name=\"Name\">"..name.."</string>\n"..[[<ProtectedString name="Source">]] ..source..[[
 </ProtectedString>
 			</Properties>
 		</Item>]]
