@@ -19,6 +19,7 @@ print("lua dirmirror.lua C:/MyProject C:/Documents/Roblox/Project MyProject Loca
 local DefaultDir = "./Test" -- Change this to project file (. is the directory the .lua file is in!!)
 
 local input = {...}
+
 local dir = input[1] or DefaultDir
 local output = input[2] or DefaultDir
 local output_name = input[3] or "ProjectRBXM"
@@ -32,7 +33,7 @@ local xml_sub = {{"&", "&amp;"}, {">", "&gt;"}, {"<", "&lt;"}, {"\'", "&apos;"},
 -- Note: this table here is constructed not as [which_sub] = sub_to, because the & has to be subbed first (to make sure that
 -- it doesn't conflict with the & in the other subs!). Like this we can control the sequence.
 
-local model = io.open(output.. "/"..output_name..".rbxm", "w+")
+local model = io.open(output:gsub("/", function() if not got then got = true return "\\" else return "/" end end).. "/"..output_name..".rbxm", "w+")
 
 
 function GetLines(file) -- Lol dir returns a file... not a string :/
@@ -46,13 +47,13 @@ end
 s = "\""
 function GetDirectoriesInDir(dir) -- returns all directories in dir
 local got = false
-dirfix = dir:gsub("/", function() if not got then got = true return "\\" else return "/" end end) -- There has to be a way to write this down better...
+dirfix = dir:gsub("/", "\\")
 print("CMD RUN: ".."dir ".. "\""..dirfix.. "\"".." /b /ad")
 	return GetLines(cmd_run("dir ".. "\""..dirfix.. "\"".." /b /ad"))
 end
 
 function GetFilesInDir(dir)
-dirfix = dir:gsub("/", function() if not got then got = true return "\\" else return "/" end end) -- There has to be a way to write this down better...
+dirfix =  dir:gsub("/", "\\")
 print("CMD RUN: ".."dir ".. "\""..dirfix.. "\"".." \\b \\a-d")
 	return GetLines(cmd_run("dir ".. "\""..dirfix.. "\"".." /b /a-d"))
 end
