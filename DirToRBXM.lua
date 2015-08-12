@@ -131,7 +131,8 @@ local function parsedir(path, data_carrier)
 			if rpath:match('%.lua$') then 
 				local script = io.open(rpath)
 				local data = script:read("*a")
-				createscript(filename, data_carrier, data)
+				local tag = createscript(filename, data_carrier, data)
+				fpointers[filename] = tag 
 			elseif rpath:match('%.xml$') then
 				local data = xml.load(rpath)
 				table.insert(data_carrier, data)
