@@ -92,9 +92,9 @@ local function createscript(name, location, data)
 	local Content = properties:append("Content")
 	Content.name = "LinkedSource"
 	Content:append("null")[1] = ""
-	local name  = properties:append("string")
-	name.name = "Name"
-	name[1] = name:gsub(".lua", "")
+	local namep  = properties:append("string")
+	namep.name = "Name"
+	namep[1] = name:gsub(".lua", "")
 	local ps = properties:append("ProtectedString")
 	ps.name = "Source"
 	ps[1] = data 
@@ -110,17 +110,18 @@ local function parsedir(path, data_carrier)
 	local fpointers = {} 
 
 	local function parse(rpath, filename)
-		local attributes = lfs.attributes(rpath)
+		local attributes,err = lfs.attributes(rpath)
+	
 		if attributes.mode == "directory" then 
 			-- Make a folder
-			if file:match("_$") then 
+			if filename:match("_$") then 
 				-- This must be put inside a script, skip
 				if fpointers[filename:sub(1,filename:len()-1)..".lua"] then 
 					local location = fpointers[filename:sub(1,filename:len()-1)..".lua"]
 					parsedir(rpath, location)
 				else 
 					-- process later on
-					fstack[file] = true
+					fstack[filename] = true
 				end  
 			else 
 				local location = createfolder(filename, data_carrier)
@@ -148,7 +149,7 @@ local function parsedir(path, data_carrier)
 	end 
 
 	for file in pairs(fstack) do 
-		parse(file)
+		parse(path.."/"..file, file)
 	end 
 end
 
