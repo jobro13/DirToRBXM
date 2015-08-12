@@ -17,6 +17,8 @@ local function parsexml(input)
 					local Name = xml.find(Properties, "string", "name", "Name")
 					if Name then 
 						-- Create dir;
+						local Name = Name[1]
+						print("Adding a folder: " .. Name)
 						lfs.mkdir(Name)
 						lfs.chdir(Name)
 						parsexml(data)
@@ -27,20 +29,22 @@ local function parsexml(input)
 				-- Create a new .lua file, and append the classname!
 				local Properties = xml.find(data, 'Properties')
 				if Properties then 
-					local Name = xml.find(Properties, 'string', 'name', 'Name')
-					local Source = xml.find(Properties, 'Protected')
-					local file = io.open(Name..".lua", "w")
+					local Name = xml.find(Properties, 'string', 'name', 'Name')[1]
+					print("Adding a " .. data.class .. ": " .. Name)
+					local Source = xml.find(Properties, 'ProtectedString')[1]
+					local file = io.open(Name..".lua", "w+")
 					file:write(Source .. "\n--cname="..data.class)
 					file:flush()
 					file:close()
 					lfs.mkdir(Name.."_")
 					lfs.chdir(Name.."_")
 					parsexml(data)
+					lfs.chdir("..")
 					-- More elgant is, besides checking for
 					-- The empty directory, to return a value...
 					local got_file = false;
 					for file in lfs.dir(Name.."_") do
-						if file ~= "." or file ~= ".." then 
+						if file ~= "." and file ~= ".." then 
 							got_file = true 
 							break 
 						end 
@@ -48,14 +52,15 @@ local function parsexml(input)
 					if not got_file then 
 						lfs.rmdir(Name.."_")
 					end 
-					lfs.chdir("..")
+					
 				end 
 			elseif data.class then
 				local Properties = xml.find(data, 'Properties')
 				if Properties then 
 					local Name = xml.find(Properties, 'string', 'name', 'Name')
 					if Name then 
-						local file = io.open(Name..'.xml')
+						print("Adding raw class: " .. data.class .. ": " .. Name[1])
+						local file = io.open(Name[1]..'.xml', 'w+')
 						file:write(tostring(data))
 						file:flush()
 						file:close()
