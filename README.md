@@ -13,5 +13,6 @@ Any other ClassName will be exported as a text file. Any scripts in those are no
 Any .lua files will get an extra last line: --cname where cname is the classname of the .lua file.
 If this --cname line is NOT present or the field is incorrect, a Script will be inserted.
 
-
+It is allowed to have Scripts inside other Scripts (of any classname)
+The contents will be put into a directory called ScriptName.contents
 
