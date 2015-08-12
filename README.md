@@ -16,3 +16,14 @@ If this --cname line is NOT present or the field is incorrect, a Script will be 
 It is allowed to have Scripts inside other Scripts (of any classname)
 The contents will be put into a directory called ScriptName.contents
 
+
+USAGE 
+======
+
+lua DirToRBXM.lua MODE SOURCE TARGET
+Mode: unpack / pack
+unpack will try to unpack a roblox XML file
+pack will try to pack a directory to a roblox XML file
+
+SOURCE: source file
+TARGET: target file or directory
